@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# code by Blake Krone from WiFiAcademy's Advanced Ekahau Design & Survey Fundamentals lab course (https://wifiacademy.net/courses/aeds)
+
 import requests
 import argparse
 import json
