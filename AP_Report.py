@@ -12,10 +12,79 @@ import zlib
 import os
 import pprint
 import csv
+import random
+import re
+import string
+
+pp = pprint.PrettyPrinter(indent=3)
+
+
+def macAnon(sourceMac, laa=False, oui=False, delim=':'):
+	anonyMac=[]
+	macChunks=sourceMac.split(':')
+	for x in range(6):
+		a=random.randint(0,255)
+		if laa and x == 0:  	# Only first Octet if making LAA compliant
+			a |= (1<<1)			# Set second bit to 1
+			a &= ~(1<<0)		# Set first bit (LSB) to 0
+		hex = '%02x' % a
+		anonyMac.append(hex)
+	if oui :
+		for octet in range(2):
+			anonyMac[octet]=macChunks[octet]
+
+	if delim == '.':
+		anonymizedMac=anonyMac[0]+anonyMac[1]+'.'+anonyMac[2]+anonyMac[3]+'.'+anonyMac[4]+anonyMac[5] 
+	else:
+		anonymizedMac=delim.join(anonyMac)
+	return anonymizedMac
+
+def serAnon():
+	countries=['CN','TH','VN','US','JP','MX','CZ']
+	cc=random.choice(countries)
+	cc+=''.join(random.choices(string.ascii_uppercase, k=4))
+	cc+=random.choice(string.digits)
+	cc+=''.join(random.choices(string.ascii_uppercase + string.digits,k=3))
+	return cc
+
+
+
+def isThisAMac(sourceString):
+		isMac=False
+		delimiter=""
+		if '.' in sourceString:
+			macMatch=re.match(r"^([0-9A-Fa-f]{4}[.]){2}([0-9A-Fa-f]{4})$", sourceString)
+			if macMatch:
+				isMac=True
+				delimiter = '.'
+		if ':' in sourceString:
+			macMatch=re.match(r"^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$", sourceString)
+			if macMatch:
+				isMac=True
+				delimiter = ':'
+		if '-' in sourceString:
+			macMatch=re.match(r"^([0-9A-Fa-f]{2}[-]){5}([0-9A-Fa-f]{2})$", sourceString)
+			if macMatch:
+				isMac=True
+				delimiter = '-'
+
+		if isMac :
+			return True, macMatch.group(), delimiter
+		else:
+			return False, None, None
+
+def isThisArubaSerial(sourceString):
+		isArubaSerial=False
+
+		serMatch=re.match(r"^([A-Z]{2})([A-Z]{4})([0-9A-Z]{4})$", sourceString)
+		if serMatch:
+			isArubaSerial=True
+			return True, serMatch.group()
+		else:
+			return False, None
+
 
 def main():
-	
-	pp = pprint.PrettyPrinter(indent=3)
 
 	defaultfile="ekahau_ap_report.csv"
 
@@ -23,8 +92,14 @@ def main():
 
 	cli.add_argument("-o", "--output", required=False, help='Output File', default=defaultfile)
 	cli.add_argument("-i", "--input", required=True, help='Input File')
+	cli.add_argument("-a", '--anonymize-macs', required=False, action="store_true", help="anonymize MACs")
+	cli.add_argument("-p", '--preserve-oui', required=False, action="store_true", help="preserve OUIs when anonymizing MACs")
+	cli.add_argument("-l", '--laa-macs', required=False, action="store_true", help="anonymized MACs are LAA compliant")
+	cli.add_argument("-s", '--anonymize-serials', required=False, action="store_true", help="anonymize Aruba serial numbers")
+
 
 	args = vars(cli.parse_args())
+	pp.pprint(args)
 
 	#Load Ekahau Project archive
 
@@ -158,6 +233,37 @@ def main():
 
 	#Initialize output list - this is a list of dict objects.
 
+	# generate MAC anonymization table to sanitize output while keeping each AP consistent - resulting MACs can either keep OUI or are LAA compliant.
+	macAnonTable={}
+	serAnonTable={}
+
+	if args['anonymize_macs'] :
+
+		# Add all BSSIDs to the MAC Anonymizer
+
+		for measuredRadio in accessPointMeasurementsJSON['accessPointMeasurements']:
+			anonymizedMac=macAnon(measuredRadio['mac'], args['laa_macs'], args['preserve_oui'],':')
+
+			macAnonTable[measuredRadio['mac']] = anonymizedMac
+					
+		# Look for MACs in the tag values and add them as well
+
+		for ap in accessPointsJSON['accessPoints']:
+			for tag in ap['tags']:
+				isAMac, macAddress, delim = isThisAMac(tag['value'])
+				if isAMac:
+					anonymizedMac=macAnon(macAddress, args['laa_macs'], args['preserve_oui'], delim)
+					macAnonTable[macAddress] = anonymizedMac
+	
+	if args['anonymize_serials']:
+		for ap in accessPointsJSON['accessPoints']:
+			for tag in ap['tags']:
+				isASerial,serial=isThisArubaSerial(tag['value'])
+				if isASerial:
+					serAnonTable[serial]=serAnon()
+
+
+	pp.pprint(serAnonTable)
 	outputData=[]
 
 	# What contains what?
@@ -230,8 +336,10 @@ def main():
 		outputRow={}
 		for f in fields:
 			outputRow[f]=None
-
-		outputRow['bssid']=measuredRadio['mac']
+		if measuredRadio['mac'] in macAnonTable:
+			outputRow['bssid']=macAnonTable[measuredRadio['mac']]
+		else:
+			outputRow['bssid']=measuredRadio['mac']
 
 		if 'ssid' in measuredRadio.keys():
 			if measuredRadio['ssid'] != "":
@@ -297,6 +405,10 @@ def main():
 		for tag in ap['tags']:
 			header=tagsByID[tag['tagKeyId']]
 			outputRow[header]=tag['value']
+			if tag['value'] in macAnonTable:
+				outputRow[header]=macAnonTable[tag['value']]
+			if tag['value'] in serAnonTable:
+				outputRow[header]=serAnonTable[tag['value']]
 		if 'vendor' in ap.keys():
 			outputRow['vendor']=ap['vendor']
 		if 'model' in ap.keys():
