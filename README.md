@@ -28,12 +28,12 @@ This script will go through all the surveyed radios in an Ekahau data file and g
   * Color
   * Tags (one per column, header is tag name, all defined tags in the ESX data file will have a column)
   
-####Caveats:
+#### Caveats:
 * because the primary key here is the BSSID, there will be multiple entries per AP. It's also possible to have multiple surveyed channels for an AP if it's under RRM. These will show up as multiple rows with the same BSSID. 
 * This code only reports on surveyed APs, and not planned APs - I will update this to include support for planned APs at a later date, but because Ekahau handles planned APs very differently, this will require some effort.
 
 ## ap_bssdb_ekahau.py
 
-*This code is currently untested and likely won't run*
+*This code is currently untested and likely won't run - I will test it more extensively next time I have an environment to run it against*
 
-Make an API query to an Aruba AOS8 environment and pulls the AP database and BSS table to generate a CSV used to update the Ekahau data file using Update_APs.py
+Makes an API query to an Aruba AOS8 environment and pulls the AP database and BSS table to generate a CSV used to update the Ekahau data file using Update_APs.py
