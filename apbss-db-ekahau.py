@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
-# ArubaOS 8 AP BSS Table CSV output via API call
+# ArubaOS 8 AP BSS Table/AP Database CSV output via API call
+# Use the output from this to update your Ekahau files
 # (c) 2021 Ian Beyer, Aruba Networks <canerdian@hpe.com>
 # This code is provided as-is with no warranties. Use at your own risk. 
 
