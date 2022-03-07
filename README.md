@@ -28,4 +28,4 @@ This script will go through all the surveyed radios in an ekahau file and genera
   * Color
   * Tags (one per column, header is tag name, all defined tags in the ESX data file will have a column)
   
-Note that because the primary key here is the BSSID, there will be multiple entries per AP. It's also possible to have multiple surveyed channels for an AP if it's under RRM.
+Note that because the primary key here is the BSSID, there will be multiple entries per AP. It's also possible to have multiple surveyed channels for an AP if it's under RRM. These will show up as multiple rows with the same BSSID. 
