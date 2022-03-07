@@ -234,7 +234,10 @@ def main():
 		outputRow['bssid']=measuredRadio['mac']
 
 		if 'ssid' in measuredRadio.keys():
-			outputRow['essid']=measuredRadio['ssid']
+			if measuredRadio['ssid'] != "":
+				outputRow['essid']=measuredRadio['ssid']
+			else:
+				outputRow['essid']='[Hidden]'
 		
 		if 'security' in measuredRadio.keys():
 			outputRow['encryption']=measuredRadio['security']
