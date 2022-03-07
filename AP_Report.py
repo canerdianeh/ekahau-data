@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-#This script allows you to generate a CSV report of all APs surveyed. 
-# (c) 2021 Ian Beyer - Ekahau table load based on code by Blake Krone - basic stuff, but he wrote it and I didn't, so credit where it's due. 
+# This script allows you to generate a CSV report of all surveyed APs in an Ekahau data file. Does not currently report on planned APs.  
+# (c) 2022 Ian Beyer - Ekahau table load based on code by Blake Krone - basic stuff, but he wrote it and I didn't, so credit where it's due. 
 
 import argparse
 import zipfile
