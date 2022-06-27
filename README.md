@@ -6,6 +6,9 @@ Here you'll find scripts for fiddling with Ekahau data files to do things that a
 ## Update_APs.py
 based on a lab file from WiFiAcademy, this takes a list of BSSIDs from a CSV and updates AP names, models, ESSIDs, as well as adding key/value tags for AP groups, AP serial numbers, AP Wired MAC addresses, and anything else you want. Can be used in conjunction with my Aruba API scripts for pulling BSS table and AP Database. 
 
+## ekahau-deploy.py
+New and improved version of AP_Report.py, based on pandas for dealing with data more cleanly. Currently only reports on planned APs in a format that is suitable for generating deployment scripts on your controller environment. Will eventually work with surveyed APs as well. 
+
 ## AP_Report.py
 This script will go through all the surveyed radios in an Ekahau data file and generate a CSV file with the following fields (input to CSV is string unless otherwise indicated - CSV output is always strings):
 
