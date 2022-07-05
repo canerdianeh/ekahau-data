@@ -1,0 +1,327 @@
+{
+	"Aruba":{
+		"AccessPoints": {
+			"AP-303H":{
+				"EG":"JY862A",
+				"IL":"JY684A",
+				"JP":"JY682A",
+				"RW":"JY678A",
+				"US":"JY680A",
+				"EG-TAA":"JY863A",
+				"IL-TAA":"JY685A",
+				"JP-TAA":"JY683A",
+				"RW-TAA":"JY679A",
+				"US-TAA":"JY681A"		
+			},
+			"AP-504" : {
+				"EG":"R2H19A",
+				"IL":"R2H20A",
+				"JP":"R2H21A",
+				"RW":"R2H22A",
+				"US":"R2H23A",
+				"EG-TAA":"R2H30A",
+				"IL-TAA":"R2H31A",
+				"JP-TAA":"R2H32A",
+				"RW-TAA":"R2H33A",
+				"US-TAA":"R2H34A"
+			},
+			"AP-505" : {
+				"EG":"R2H25A",
+				"IL":"R2H26A",
+				"JP":"R2H27A",
+				"RW":"R2H28A",
+				"US":"R2H29A",
+				"EG-TAA":"R2H35A",
+				"IL-TAA":"R2H36A",
+				"JP-TAA":"R2H37A",
+				"RW-TAA":"R2H38A",
+				"US-TAA":"R2H39A"
+
+			},
+			"AP-503H": {
+				"US":"R3V38A",
+				"EG":"R3V44A",
+				"IL":"R3V42A",
+				"JP":"R3V40A",
+				"RW":"R3V36A",
+				"US-TAA":"R3V39A",
+				"EG-TAA":"R3V45A",
+				"IL-TAA":"R3V43A",
+				"JP-TAA":"R3V41A",
+				"RW-TAA":"R3V37A"
+				},
+			"AP-505H": {
+				"US":"R3V48A",
+				"EG":"R3V54A",
+				"IL":"R3V52A",
+				"JP":"R3V50A",
+				"RW":"R3V46A",
+				"US-TAA":"R3V49A",
+				"EG-TAA":"R3V55A",
+				"IL-TAA":"R3V53A",
+				"JP-TAA":"R3V51A",
+				"RW-TAA":"R3V47A"
+
+			},
+			"AP-514" : {
+				"EG":"Q9H54A",
+				"IL":"Q9H55A",
+				"JP":"Q9H56A",
+				"RW":"Q9H57A",
+				"US":"Q9H58A",
+				"EG-TAA":"Q9H64A",
+				"IL-TAA":"Q9H65A",
+				"JP-TAA":"Q9H66A",
+				"RW-TAA":"Q9H67A",
+				"US-TAA":"Q9H68A"
+			},
+			"AP-515" : {
+				"EG":"Q9H59A",
+				"IL":"Q9H60A",
+				"JP":"Q9H61A",
+				"RW":"Q9H62A",
+				"US":"Q9H63A",
+				"EG-TAA":"Q9H69A",
+				"IL-TAA":"Q9H70A",
+				"JP-TAA":"Q9H71A",
+				"RW-TAA":"Q9H72A",
+				"US-TAA":"Q9H73A"
+
+			},
+			"AP-534" : {
+				"EG":"JZ328A",
+				"IL":"JZ329A",
+				"JP":"JZ330A",
+				"RW":"JZ331A",
+				"US":"JZ332A",
+				"EG-TAA":"JZ338A",
+				"IL-TAA":"JZ339A",
+				"JP-TAA":"JZ340A",
+				"RW-TAA":"JZ341A",
+				"US-TAA":"JZ342A"
+			},
+			"AP-535" : {
+				"EG":"JZ333A",
+				"IL":"JZ334A",
+				"JP":"JZ335A",
+				"RW":"JZ336A",
+				"US":"JZ337A",
+				"EG-TAA":"JZ343A",
+				"IL-TAA":"JZ344A",
+				"JP-TAA":"JZ345A",
+				"RW-TAA":"JZ346A",
+				"US-TAA":"JZ347A"
+
+			},
+			"AP-555" : {
+				"EG":"JZ353A",
+				"IL":"JZ354A",
+				"JP":"JZ355A",
+				"RW":"JZ356A",
+				"US":"JZ357A",
+				"EG-TAA":"JZ363A",
+				"IL-TAA":"JZ364A",
+				"JP-TAA":"JZ365A",
+				"RW-TAA":"JZ366A",
+				"US-TAA":"JZ367A"
+			},
+			"AP-555 tri-radio" : {
+				"EG":"JZ353A",
+				"IL":"JZ354A",
+				"JP":"JZ355A",
+				"RW":"JZ356A",
+				"US":"JZ357A",
+				"EG-TAA":"JZ363A",
+				"IL-TAA":"JZ364A",
+				"JP-TAA":"JZ365A",
+				"RW-TAA":"JZ366A",
+				"US-TAA":"JZ367A"
+			},
+			"AP-565" : {
+				"EG":"R4W40A",
+				"IL":"R4W41A",
+				"JP":"R4W42A",
+				"RW":"R4W43A",
+				"US":"R4W44A",
+				"EG-TAA":"R4W50A",
+				"IL-TAA":"R4W51A",
+				"JP-TAA":"R4W52A",
+				"RW-TAA":"R4W53A",
+				"US-TAA":"R4W54A"
+			},
+			"AP-567" : {
+				"EG":"R4W45A",
+				"IL":"R4W46A",
+				"JP":"R4W47A",
+				"RW":"R4W48A",
+				"US":"R4W49A",
+				"EG-TAA":"R4W55A",
+				"IL-TAA":"R4W56A",
+				"JP-TAA":"R4W57A",
+				"RW-TAA":"R4W58A",
+				"US-TAA":"R4W59A"
+			},
+			"AP-574" : {
+				"EG":"R4H09A",
+				"IL":"R4H10A",
+				"JP":"R4H11A",
+				"RW":"R4H12A",
+				"US":"R4H13A",
+				"EG-TAA":"R4H24A",
+				"IL-TAA":"R4H25A",
+				"JP-TAA":"R4H26A",
+				"RW-TAA":"R4H27A",
+				"US-TAA":"R4H28A"
+			},
+			"AP-575" : {
+				"EG":"R4H14A",
+				"IL":"R4H15A",
+				"JP":"R4H16A",
+				"RW":"R4H17A",
+				"US":"R4H18A",
+				"EG-TAA":"R4H29A",
+				"IL-TAA":"R4H30A",
+				"JP-TAA":"R4H31A",
+				"RW-TAA":"R4H32A",
+				"US-TAA":"R4H33A"
+			},
+			"AP-577" : {
+				"EG":"R4H19A",
+				"IL":"R4H20A",
+				"JP":"R4H21A",
+				"RW":"R4H22A",
+				"US":"R4H23A",
+				"EG-TAA":"R4H34A",
+				"IL-TAA":"R4H35A",
+				"JP-TAA":"R4H36A",
+				"RW-TAA":"R4H37A",
+				"US-TAA":"R4H38A"
+			},
+			"AP-584" : {
+				"US":"R7S99A",
+				"RW":"R7T00A",
+				"EG":"R7T01A",
+				"IL":"R7T02A",
+				"JP":"R7T03A",
+				"US-TAA":"R7T14A",
+				"RW-TAA":"R7T15A",
+				"EG-TAA":"R7T16A",
+				"IL-TAA":"R7T17A",
+				"JP-TAA":"R7T18A"
+			},
+			"AP-585" : {
+				"US":"R7T04A",
+				"RW":"R7T05A",
+				"EG":"R7T06A",
+				"IL":"R7T07A",
+				"JP":"R7T08A",
+				"US-TAA":"R7T19A",
+				"RW-TAA":"R7T20A",
+				"EG-TAA":"R7T21A",
+				"IL-TAA":"R7T22A",
+				"JP-TAA":"R7T23A"
+			},
+			"AP-587" : {
+				"US":"R7T09A",
+				"RW":"R7T10A",
+				"EG":"R7T11A",
+				"IL":"R7T12A",
+				"JP":"R7T13A",
+				"US-TAA":"R7T24A",
+				"RW-TAA":"R7T25A",
+				"EG-TAA":"R7T26A",
+				"IL-TAA":"R7T27A",
+				"JP-TAA":"R7T28A"
+			},
+			"AP-635" : {
+				"EG":"R7J24A",
+				"IL":"R7J25A",
+				"JP":"R7J26A",
+				"RW":"R7J27A",
+				"US":"R7J28A",
+				"EG-TAA":"R7J29A",
+				"IL-TAA":"R7J30A",
+				"JP-TAA":"R7J31A",
+				"RW-TAA":"R7J32A",
+				"US-TAA":"R7J33A"
+			},
+			"AP-655" : {
+				"EG":"R7J35A",
+				"IL":"R7J36A",
+				"JP":"R7J37A",
+				"RW":"R7J38A",
+				"US":"R7J39A",
+				"EG-TAA":"R7J40A",
+				"IL-TAA":"R7J41A",
+				"JP-TAA":"R7J42A",
+				"RW-TAA":"R7J43A",
+				"US-TAA":"R7J44A"
+			}
+		},
+		"Antennas": {
+			"AP-ANT-1W":"JW009A",
+			"AP-ANT-13B":"JW001A",
+			"AP-ANT-19":"JW004A",
+			"AP-ANT-20W":"JW011A",
+			"AP-ANT-16":"JW003A",
+			"AP-ANT-25A":"JW012A",
+			"AP-ANT-28":"JW013A",
+			"AP-ANT-40":"JW017A",
+			"AP-ANT-45":"JW018A",
+			"AP-ANT-48":"JW019A",
+			"ANT-2x2-2005":"JW023A",
+			"ANT-2x2-2314":"JW024A",
+			"Aruba ANT-2x2-2314 2.4GHz 14dBi":"JW024A",
+			"ANT-2x2-2714":"JW025A",
+			"ANT-3x3-D100":"JW034A",
+			"ANT-3x3-D608":"JW035A",
+			"ANT-2x2-5005":"JW026A",
+			"ANT-2x2-5010":"JW027A",
+			"ANT-3x3-5712":"JW033A",
+			"ANT-4x4-5314":"JX988A",
+			"Aruba ANT-4x4-5314 5GHz 14dBi":"JX988A",
+			"ANT-4x4-D100":"Q8N50A",
+			"ANT-4x4-D608":"Q8N51A"
+		},
+		
+		"APMounts":{
+			"AP-500H-MNT1":"R3V58A",
+			"AP-503H-MNT2":"R3V61A",
+			"AP-505H-MNT2":"R3V59A",
+			"AP-500H-MNTD":"R3V60A",
+			"AP-303H-MNT1":"JY686A",
+			"AP-303H-MNT2":"JY687A",
+			"AP-303H-MNTD":"JY688A",
+			"AP-303H-MNTW":"JY689A",
+			"AP-303H-MNTU":"R3T21A",
+			"AP-MNT-A":"R3J15A",
+			"AP-MNT-B":"R3J16A",
+			"AP-MNT-C":"R3J17A",
+			"AP-MNT-D":"R3J18A",
+			"AP-MNT-E":"R3J19A",
+			"AP-270-MNT-V1":"JW052A",
+			"AP-270-MNT-V2":"JW053A",
+			"AP-270-MNT-H1":"JW054A",
+			"AP-270-MNT-H2":"JW055A",
+			"AP-270-MNT-H3":"R6W11A",
+			"AP-OUT-MNT-V1A":"R9H97A"
+		},
+		"AntennaMounts":{
+			"AP-ANT-MNT-4":"JW021A",
+			"AP-ANT-MNT-5":"JW022A"
+		}
+	},
+	"Extreme":{
+		"AccessPoints" :{
+			"Model":{
+				"GEO":"SKU"
+			}
+		},
+		"Antennas":{
+			"Model":"SKU"
+		},
+		"Mounts":{
+			"Model":"SKU"
+		}
+	}
+}
