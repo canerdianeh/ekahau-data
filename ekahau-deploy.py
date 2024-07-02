@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-# This script allows you to generate a CSV report of all surveyed APs in an Ekahau data file. Does not currently report on planned APs.  
-# (c) 2022 Ian Beyer - Ekahau table load based on code by Blake Krone - basic stuff, but he wrote it and I didn't, so credit where it's due. 
+# This script allows you to generate a CSV report of all surveyed APs in an Ekahau data file.   
+# (c) 2022-2024 Ian Beyer - Ekahau table load based on code by Blake Krone - basic stuff, but he wrote it and I didn't, so credit where it's due. 
 
 import argparse
 import zipfile
@@ -19,6 +19,9 @@ import pandas as pd
 
 pp = pprint.PrettyPrinter(indent=3)
 
+pd.set_option('future.no_silent_downcasting', True)
+
+channelmap={}
 
 def macAnon(sourceMac, laa=False, oui=False, delim=':'):
 	anonyMac=[]
@@ -351,26 +354,26 @@ def main():
 	# Close input file, we are done with it and don't need open files aimlessly hanging around. 
 	orig_archive.close()
 
-	print("\nNotes:")
-	print(notesDF)
-	print("\nAccess Points:")
-	print(accessPointsDF)
-	print("\nMeasured Radios:")
-	print(measuredRadiosDF)
-	print("\nAntennas:")
-	print(antennasDF)
-	print("\nAP Measurements:")
+	#print("\nNotes:")
+	#print(notesDF)
+	#print("\nAccess Points:")
+	#print(accessPointsDF)
+	#print("\nMeasured Radios:")
+	#print(measuredRadiosDF)
+	#print("\nAntennas:")
+	#print(antennasDF)
+	#print("\nAP Measurements:")
 	#print(apMeasurementsDF)
-	print("\nTag Keys:")
-	print(tagKeysDF)
-	print("\nFloor Plans:")
-	print(floorPlansDF)
-	print("\nBuildings:")
-	print(buildingsDF)
-	print("\nBuilding Floors:")
-	print(buildingFloorsDF)
-	print("\nSimulated Radios:")
-	print(simRadiosDF)
+	#print("\nTag Keys:")
+	#print(tagKeysDF)
+	#print("\nFloor Plans:")
+	#print(floorPlansDF)
+	#print("\nBuildings:")
+	#print(buildingsDF)
+	#print("\nBuilding Floors:")
+	#print(buildingFloorsDF)
+	#print("\nSimulated Radios:")
+	#print(simRadiosDF)
 
 	if tagData == True:
 		# Add Tags to AP List
@@ -393,6 +396,7 @@ def main():
 
 	# First, simulated radios
 	if simData == True: 
+
 
 		simRadiosDF.drop(columns=['defaultAntennas','status'])
 		simRadiosDF=pd.merge(simRadiosDF, accessPointsDF[['ap_id','ap_name',]],left_on='accessPointId', right_on='ap_id', how='left')
@@ -503,50 +507,75 @@ def main():
 				'apCoupling':'ble-ant-type'
 				}, inplace=True)
 
-		
-		print("\n\nMerged APs and Simulated Radios:")
+		simapDF['tilt']=simapDF[['r0-tilt','r1-tilt','r2-tilt']].mean(axis=1).round()
+		simapDF['azimuth']=simapDF[['r0-azimuth','r1-azimuth','r2-azimuth']].mean(axis=1).round()
+		simapDF['height']=simapDF[['r0-height','r1-height','r2-height']].mean(axis=1).round(decimals=2)
+		simapDF['ap_model']=simapDF['model'].str.split('+').str[0]
+		simapDF['ap_antenna']=simapDF['model'].str.split('+').str[1]
+		simapDF.rename(columns={'r0-mounting':'mount_location'},inplace=True)
+		simapDF['ble-azimuth']=simapDF['ble-azimuth'].round(decimals=0)
+		simapDF['ble-height']=simapDF['ble-height'].round(decimals=2)
+		for r in range(3):
+			radio='r'+str(r)+'-'
+			simapDF[radio+'tx_mw']=simapDF[radio+'tx_mw'].round(decimals=1)
+			simapDF[radio+'band']=simapDF[radio+'band'].replace(to_replace={'TWO':'2.4','FIVE':'5','SIX':'6'})
+			simapDF[radio+'channels']=simapDF[radio+'channels'].replace(to_replace=channelmap)
 
-		simapDF['ap_serial']=None
-		simapDF['ap_hwmac']=None
 		simapDF['r0-chanwidth']=None
 		simapDF['r1-chanwidth']=None
 		simapDF['r2-chanwidth']=None
 
+		for index, row in simapDF.iterrows():
+			for r in range(3):
+				radio='r'+str(r)+'-'
+				chanlist=[]
+				if type(row[radio+'channels']) == list:
+					for ch in row[radio+'channels']:
+						ctrfrq=int(ch)
+						if row[radio+'band']=='2.4':
+							chanlist.append(int((ctrfrq-2412)/5+1))
+						if row[radio+'band']=='5':
+							chanlist.append(int((ctrfrq-5160)/5+32))
+						if row[radio+'band']=='6':
+							chanlist.append(int((ctrfrq-5955)/5+1))
+					simapDF.loc[index, radio+'channels']=chanlist
+
+	
+		print("\n\nMerged APs and Simulated Radios:")
+
+		simapDF['ap_serial']=None
+		simapDF['ap_hwmac']=None
+
 		fieldlist=[]
 
-		basefields=['ap_id',
+		basefields=['ap_name',
+					'vendor',
+					'ap_model',
+					'ap_antenna',
 					'ap_serial',
 					'ap_hwmac',
-					'ap_name',
-					'vendor',
-					'model',
 					'coord.x',
 					'coord.y',
-					'mine',
-					'hidden',
-					'userDefinedPosition',
+					'mount_location',
+					'height',
+					'tilt',
+					'azimuth',
 					'color'
 					]
-		radiofields =[	'band',
+		radiofields =[	'enabled',
+						'band',
 						'phy',
-						'chanwidth',
 						'channels',
-						'antenna',
-						'enabled',
+						'chanwidth',
 						'gain',
 						'tx_mw',
-						'ant-type',
-						'mounting',
-						'azimuth',
-						'tilt',
-						'height',
 						'ss',
 						'sgi',
 						'greenfield']
-		blefields = [	'ble-antenna',
-						'ble-enabled',
-						'ble-gain',
+		blefields = [	'ble-enabled',
 						'ble-tx_mw',
+						'ble-antenna',
+						'ble-gain',
 						'ble-ant-type',
 						'ble-mounting',
 						'ble-azimuth',
@@ -572,6 +601,19 @@ def main():
 					simapDF.at[idx,width]=len(row[ch])*20
 
 		simapDF.to_csv(path_or_buf='deploy.csv')
+
+		writer = pd.ExcelWriter("deploy_table.xlsx", engine='xlsxwriter')
+		simapDF.to_excel(writer, sheet_name='Sheet1', startrow=1, header=False, index=False)
+		workbook = writer.book
+		worksheet = writer.sheets['Sheet1']
+		(max_row, max_col) = simapDF.shape
+		column_settings = []
+		for header in simapDF.columns:
+		    column_settings.append({'header': header})
+		worksheet.add_table(0, 0, max_row, max_col - 1, {'columns': column_settings})
+		worksheet.set_column(0, max_col - 1, 1)
+		writer.close()
+
 	# End Simulated AP conditional Block
 	
 	exit()

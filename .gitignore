@@ -13,3 +13,5 @@ Titanic/
 Titanic_modified.esx
 *.esx
 /data
+deploy_table.xlsx
+~$deploy_table.xlsx
