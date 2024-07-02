@@ -213,7 +213,7 @@ def main():
 				df_dict[tagname]=tag['value']
 			tmp_df = pd.DataFrame(df_dict, index=[0])
 
-			apTagsListDF = apTagsListDF.append(tmp_df) # append the tmp_df to our final df
+			apTagsListDF = apTagsListDF._append(tmp_df) # append the tmp_df to our final df
 
 		apTagsListDF.reset_index(drop=True)  # Reset the final DF index sinze we assign index 0 to each tmp df
 
@@ -311,7 +311,7 @@ def main():
 	print("==========")
 	# Load Buildings Table
 	workingFile='buildingFloors.json'
-
+	building = False
 	if workingFile in orig_archive.namelist():
 		print ("Loading "+workingFile+"...")
 		with orig_archive.open(workingFile) as json_file:
@@ -319,6 +319,7 @@ def main():
 			json_file.close()
 		buildingFloorsDF=pd.DataFrame(buildingFloorsJSON['buildingFloors'])
 		buildingFloorsDF.set_index('id')
+		building = True
 	else:
 		print(workingFile+" not found in archive. Skipping. ")
 		buildingFloorsDF=pd.DataFrame()
@@ -350,26 +351,26 @@ def main():
 	# Close input file, we are done with it and don't need open files aimlessly hanging around. 
 	orig_archive.close()
 
-	#print("\nNotes:")
-	#print(notesDF)
-	#print("\nAccess Points:")
-	#print(accessPointsDF)
-	#print("\nMeasured Radios:")
-	#print(measuredRadiosDF)
-	#print("\nAntennas:")
-	#print(antennasDF)
-	#print("\nAP Measurements:")
+	print("\nNotes:")
+	print(notesDF)
+	print("\nAccess Points:")
+	print(accessPointsDF)
+	print("\nMeasured Radios:")
+	print(measuredRadiosDF)
+	print("\nAntennas:")
+	print(antennasDF)
+	print("\nAP Measurements:")
 	#print(apMeasurementsDF)
-	#print("\nTag Keys:")
-	#print(tagKeysDF)
-	#print("\nFloor Plans:")
-	##print(floorPlansDF)
-	#print("\nBuildings:")
-	#print(buildingsDF)
-	#print("\nBuilding Floors:")
-	#print(buildingFloorsDF)
-	#print("\nSimulated Radios:")
-	#print(simRadiosDF)
+	print("\nTag Keys:")
+	print(tagKeysDF)
+	print("\nFloor Plans:")
+	print(floorPlansDF)
+	print("\nBuildings:")
+	print(buildingsDF)
+	print("\nBuilding Floors:")
+	print(buildingFloorsDF)
+	print("\nSimulated Radios:")
+	print(simRadiosDF)
 
 	if tagData == True:
 		# Add Tags to AP List
@@ -379,11 +380,13 @@ def main():
 	# end tag data conditional block
 
 	# Extrapolate building data
-	accessPointsDF=pd.merge(accessPointsDF, buildingFloorsDF[['floorPlanId','buildingId']], on='floorPlanId')
-	accessPointsDF=pd.merge(accessPointsDF, buildingsDF[['name','id']], left_on='buildingId', right_on='id',suffixes=(None,"_bldg"))
+	if building == True:
+		accessPointsDF=pd.merge(accessPointsDF, buildingFloorsDF[['floorPlanId','buildingId']], on='floorPlanId')
+		accessPointsDF=pd.merge(accessPointsDF, buildingsDF[['name','id']], left_on='buildingId', right_on='id',suffixes=(None,"_bldg"))
 	accessPointsDF=pd.merge(accessPointsDF, floorPlansDF[['name','id']], left_on='floorPlanId', right_on='id', suffixes=(None,"_floor"))
-	accessPointsDF.drop(columns=['floorPlanId','buildingId','id_floor','id'], inplace=True)
-	accessPointsDF.rename(columns={'name':'building','name_floor':'floor'}, inplace=True)
+	if building== True: 
+		accessPointsDF.drop(columns=['floorPlanId','buildingId','id_floor','id'], inplace=True)
+		accessPointsDF.rename(columns={'name':'building','name_floor':'floor'}, inplace=True)
 	accessPointsDF.to_csv(path_or_buf='aps.csv')
 
 	# Break out the radios
@@ -392,6 +395,7 @@ def main():
 	if simData == True: 
 
 		simRadiosDF.drop(columns=['defaultAntennas','status'])
+		simRadiosDF=pd.merge(simRadiosDF, accessPointsDF[['ap_id','ap_name',]],left_on='accessPointId', right_on='ap_id', how='left')
 
 		simRadioWifi=simRadiosDF.query('radioTechnology == "IEEE802_11"')
 		simRadioWifi.to_csv(path_or_buf='simRadiosWiFi.csv')
@@ -403,6 +407,7 @@ def main():
 		# Radio 0
 		simRadioWifi0=simRadioWifi.query('accessPointIndex == 0')
 		simRadioWifi0=pd.merge(simRadioWifi0, antennasDF[['id','name','maxGain','apCoupling','frequencyBand']],left_on='antennaTypeId', right_on='id', how='left')
+
 		simRadioWifi0.drop(columns=['id_x','id_y','radioTechnology','status','antennaTypeId','accessPointIndex'], inplace=True)
 		simRadioWifi0.to_csv(path_or_buf='simRadiosWiFi0.csv')
 
@@ -411,7 +416,7 @@ def main():
 		simapDF.rename(columns={
 				'name':'r0-antenna',
 				'transmitPower':'r0-tx_mw',
-				'channel':'r0-channels',
+				'channelByCenterFrequencyDefinedNarrowChannels':'r0-channels',
 				'antennaDirection':'r0-azimuth',
 				'antennaTilt':'r0-tilt',
 				'antennaHeight':'r0-height',
@@ -437,7 +442,7 @@ def main():
 		simapDF.rename(columns={
 				'name':'r1-antenna',
 				'transmitPower':'r1-tx_mw',
-				'channel':'r1-channels',
+				'channelByCenterFrequencyDefinedNarrowChannels':'r1-channels',
 				'antennaDirection':'r1-azimuth',
 				'antennaTilt':'r1-tilt',
 				'antennaHeight':'r1-height',
@@ -463,7 +468,7 @@ def main():
 		simapDF.rename(columns={
 				'name':'r2-antenna',
 				'transmitPower':'r2-tx_mw',
-				'channel':'r2-channels',
+				'channelByCenterFrequencyDefinedNarrowChannels':'r2-channels',
 				'antennaDirection':'r2-azimuth',
 				'antennaTilt':'r2-tilt',
 				'antennaHeight':'r2-height',
@@ -485,7 +490,7 @@ def main():
 		simRadioBLE.to_csv(path_or_buf='simRadiosBLE.csv')
 
 		simapDF=pd.merge(simapDF, simRadioBLE, left_on='ap_id', right_on='accessPointId',how='left',suffixes=(None,'_bt'))
-		simapDF.drop(columns=['accessPointId','defaultAntennas','greenfield','shortGuardInterval','spatialStreamCount','technology','channel','frequencyBand'], inplace=True)
+		#simapDF.drop(columns=['accessPointId','defaultAntennas','greenfield','shortGuardInterval','spatialStreamCount','technology','channel','frequencyBand'], inplace=True)
 		simapDF.rename(columns={
 				'name':'ble-antenna',
 				'transmitPower':'ble-tx_mw',
@@ -515,8 +520,6 @@ def main():
 					'ap_name',
 					'vendor',
 					'model',
-					'building',
-					'floor',
 					'coord.x',
 					'coord.y',
 					'mine',
